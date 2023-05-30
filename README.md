@@ -2,10 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## clone the code by using this url
 
-In the project directory, you can run:
 
+### After cloning delete the node modules folder and package.lock.json file from the source code and try the following steps 
+### `npm install`
 ### `npm start`
 
 Runs the app in the development mode.\
