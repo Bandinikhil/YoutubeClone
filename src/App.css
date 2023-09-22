@@ -1,1 +1,12 @@
 
+/* Hide the scrollbar thumb (handle) */
+::-webkit-scrollbar-thumb {
+    background: transparent; /* Make the scrollbar thumb transparent */
+  }
+  
+  /* Hide the scrollbar track (the background of the scrollbar) */
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Make the scrollbar track transparent */
+  }
+  
+  ::-webkit-scrollbar {display:none;}

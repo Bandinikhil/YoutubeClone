@@ -26,11 +26,13 @@ const LeftNav = () => {
 
     return (
         <div
-            className={`md:block w-[240px] overflow-y-auto h-full py-4 bg-black absolute md:relative z-10 translate-x-[-240px] md:translate-x-0 transition-all ${
-                mobileMenu ? "translate-x-0" : ""
-            }`}
-        >
-            <div className="flex px-5 flex-col">
+        //     className={`md:block w-[240px] overflow-y-auto h-full py-4 bg-black absolute md:relative z-100 translate-x-[-240px] md:translate-x-0 transition-all sm:${
+        //         mobileMenu ? "translate-x-[240px]" : ""
+        //     }`}
+        
+        className={`md:block w-[240px] overflow-y-auto h-full py-4 bg-black absolute md:relative z-50 translate-x-[-240px] md:translate-x-0 transition-all ${mobileMenu ? "translate-x-[0.1px]" : ""}`}
+>
+            <div className="flex px-5 flex-col z-50">
                 {categories.map((item) => {
                     return (
                         <React.Fragment key={item.name}>
@@ -48,13 +50,13 @@ const LeftNav = () => {
                                 }`}
                             />
                             {item.divider && (
-                                <hr className="my-5 border-white/[0.2]" />
+                                <hr className="my-5 border-white/[0.2] z-50" />
                             )}
                         </React.Fragment>
                     );
                 })}
-                <hr className="my-5 border-white/[0.2]" />
-                <div className="text-white/[0.5] text-[12px]">
+                <hr className="my-5 border-white/[0.2] z-50" />
+                <div className="text-white/[0.5] text-[12px] z-50">
                     Clone by Nikhil
                 </div>
             </div>

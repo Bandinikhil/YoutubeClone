@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ytLogo from "../images/yt-logo.png";
 //import ytLogoMobile from "../images/yt-logo-mobile.png";
@@ -8,17 +8,22 @@ import { IoIosSearch } from "react-icons/io";
 import { RiVideoAddLine } from "react-icons/ri";
 import { FiBell } from "react-icons/fi";
 import { CgClose } from "react-icons/cg";
-
+import { YOUTUBE_SEARCH_SUGGESTIONS } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
+import { useDispatch, useSelector } from 'react-redux';
 import { Context } from "../context/contextApi";
 import Loader from "../shared/loader";
+import store from "../utils/appStore";
 
 const Header = () => {
     const [searchQuery, setSearchQuery] = useState("");
-
+    const [searchResults,setSearchResults] = useState([]);
+    const [suggestionsVisible, setSuggestionVisible] = useState(false);
     const { loading, mobileMenu, setMobileMenu } = useContext(Context);
 
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const searchCache = useSelector((store)=> store.search);
     const searchQueryHandler = (event) => {
         if (
             (event?.key === "Enter" || event === "searchButton") &&
@@ -27,6 +32,46 @@ const Header = () => {
             navigate(`/searchResult/${searchQuery}`);
         }
     };
+
+    useEffect(()=>{
+        const timer = setTimeout(()=>{
+            if(searchCache[searchQuery]){
+                setSearchResults(searchCache[searchQuery]);
+               }else{
+                getSearchSuggestions(searchQuery)
+               }
+        },200)
+
+        return ()=>{
+            clearTimeout(timer);
+        }
+       
+    },[searchQuery])
+
+    const getSearchSuggestions = async(query)=>{
+const data = await fetch(YOUTUBE_SEARCH_SUGGESTIONS + query);
+const json = await data.json();
+console.log(json[1])
+setSearchResults(json[1] || [])
+dispatch(cacheResults({[searchQuery] : json[1] || []}))
+    }
+
+    const handleSuggestionClick = (suggestion)=>{
+        setSearchQuery(suggestion);
+       setSuggestionVisible(false);
+       navigate(`/searchResult/${suggestion}`);
+    }
+
+    const handleInputFocus = () => {
+        setSuggestionVisible(true);
+      };
+    
+      const handleInputBlur = () => {
+        // Delay the closing of suggestions to allow clicking on a suggestion
+        setTimeout(() => {
+          setSuggestionVisible(false);
+        }, 300);
+      };
 
     const mobileMenuToggle = () => {
         setMobileMenu(!mobileMenu);
@@ -53,10 +98,12 @@ const Header = () => {
                         )}
                     </div>
                 )}
-                <Link to="/" className="flex h-5 items-center">
+                <Link to="/" className="flex h-5 items-center  grow sm:hidden md:block">
                     <img
-                        className="h-full"
-                        src={ytLogo}
+                        className="h-full flex grow "
+                        //src={ytLogo}
+                        src="https://www.freeiconspng.com/thumbs/video-play-icon/video-play-icon-24.png"
+                        //src="https://i.pinimg.com/originals/ac/5a/a2/ac5aa25eb4fabea8d06e8927320e3ecf.jpg"
                         alt="Youtube"
                        
                     />
@@ -80,7 +127,35 @@ const Header = () => {
                         onKeyUp={searchQueryHandler}
                         placeholder="Search"
                         value={searchQuery}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                     />
+                    {suggestionsVisible && searchResults.length > 0 && (
+          <div className='absolute top-14 text-white to-white bg-black py-2 px-5 w-44 md:group-focus-within:pl-0 md:w-64 lg:w-[500px] shadow-md rounded-lg  outline-none'>
+            <ul>
+              {searchResults.map((suggestionsdata, index) => (
+                <>
+               
+                <li
+                  key={index}
+                  onClick={(e) =>{ 
+                    e.preventDefault();
+                    handleSuggestionClick(suggestionsdata) }
+                   
+                  }
+                  className=' py-2 shadow-sm cursor-pointer flex'
+                  data-testid = "suggestions"
+                >
+                     <span className="w-10 items-center justify-center pl-2">
+                <IoIosSearch className="text-white text-xl" />
+                 </span>
+                  {suggestionsdata}
+                </li>
+                </>
+              ))}
+            </ul>
+          </div>
+        )}
                 </div>
                 <button
                     className="w-[40px] md:w-[60px] h-8 md:h-10 flex items-center justify-center border border-l-0 border-[#303030] rounded-r-3xl bg-white/[0.1]"
@@ -88,6 +163,7 @@ const Header = () => {
                 >
                     <IoIosSearch className="text-white text-xl" />
                 </button>
+               
             </div>
             <div className="flex items-center">
                 <div className="hidden md:flex">
