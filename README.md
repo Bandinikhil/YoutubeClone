@@ -20,9 +20,7 @@ To maintain high performance, even with extensive user-generated content, we've 
 [React, Redux, JavaScript, Tailwindcss]
 
 ## Usage
-![Screenshot (87)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/5f943215-45ef-4e22-95c5-f6cfb69b1091)
-![Screenshot (88)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/93a0858b-4c63-44d9-a65b-539dec6949ed)
-![Screenshot (89)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/7cd6f993-5eee-4abb-bdf1-1b0a731dd0d1)
+![Screenshot (87)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/5f943215-45ef-4e22-95c5-f6cfb69b1091)        ![Screenshot (88)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/93a0858b-4c63-44d9-a65b-539dec6949ed)     ![Screenshot (89)](https://github.com/Bandinikhil/YoutubeClone/assets/105233916/7cd6f993-5eee-4abb-bdf1-1b0a731dd0d1)
 
 ## clone the code by using this url
 https://github.com/Bandinikhil/YoutubeClone.git
